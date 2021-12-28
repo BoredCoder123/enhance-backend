@@ -19,13 +19,13 @@ public class UserService {
     private UserRepository userRepository;
 
     public String createUser(UserRegisterRequest userRegisterRequest) throws Exception {
-        User existingUser = userRepository.getByEmail(userRegisterRequest.getEmail());
+        User existingUser = userRepository.getByEmail(userRegisterRequest.getEmail().toLowerCase());
         if(existingUser!=null){
             throw new Exception("Unable to create user");
         }
         User newUser = new User();
         newUser.setName(userRegisterRequest.getName());
-        newUser.setEmail(userRegisterRequest.getEmail());
+        newUser.setEmail(userRegisterRequest.getEmail().toLowerCase());
         newUser.setPassword(userRegisterRequest.getPassword());
         newUser.setCoinsBalance(0);
         userRepository.save(newUser);
@@ -34,7 +34,7 @@ public class UserService {
 
 
     public UserLoginResponse login(UserLoginRequest userLoginRequest) throws Exception{
-        User user = userRepository.getByEmail(userLoginRequest.getEmail());
+        User user = userRepository.getByEmail(userLoginRequest.getEmail().toLowerCase());
         if(user==null){
             throw new Exception("Unable to find the email");
         }else{
