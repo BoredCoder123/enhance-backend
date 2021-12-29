@@ -2,6 +2,7 @@ package com.example.enhancejavarest.controller;
 
 import com.example.enhancejavarest.entity.Brand;
 import com.example.enhancejavarest.request.BrandLoginRequest;
+import com.example.enhancejavarest.request.CreateVideoCampaignRequest;
 import com.example.enhancejavarest.service.BrandService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +31,24 @@ public class BrandController {
     }
 
     @PostMapping("/b/login")
-    private ResponseEntity loginBrand(@RequestBody BrandLoginRequest brandLoginRequest){
+    public ResponseEntity loginBrand(@RequestBody BrandLoginRequest brandLoginRequest){
         try{
             String returnedString = brandService.loginBrand(brandLoginRequest);
             return new ResponseEntity<String>(returnedString, HttpStatus.OK);
         }catch(Exception e){
             log.error(e.toString());
             return new ResponseEntity<String>("Unable to register brand", HttpStatus.CONFLICT);
+        }
+    }
+
+    @PostMapping("/create-video-campaign")
+    public ResponseEntity createVideoCampaign(@RequestBody CreateVideoCampaignRequest createVideoCampaignRequest){
+        try{
+            String returnedString = brandService.createVideoCampaign(createVideoCampaignRequest);
+            return new ResponseEntity(returnedString, HttpStatus.CONFLICT);
+        }catch(Exception e){
+            log.error(e.toString());
+            return new ResponseEntity<String>("Unable to add video campaign", HttpStatus.CONFLICT);
         }
     }
 }
