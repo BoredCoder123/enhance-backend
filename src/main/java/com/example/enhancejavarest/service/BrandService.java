@@ -6,6 +6,7 @@ import com.example.enhancejavarest.repository.*;
 import com.example.enhancejavarest.request.BrandLoginRequest;
 import com.example.enhancejavarest.request.CreateBlogCampaignRequest;
 import com.example.enhancejavarest.request.CreateVideoCampaignRequest;
+import com.example.enhancejavarest.response.GetBlogsResponse;
 import com.example.enhancejavarest.response.UserLoginResponse;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,6 +127,14 @@ public class BrandService {
             return "Blog created and saved successfully";
         }catch(Exception e){
             throw new Exception("Unable to create blog because: "+e.toString());
+        }
+    }
+
+    public GetBlogsResponse getBlogs(Integer id) throws Exception{
+        try{
+
+        } catch (Exception e){
+            throw new Exception("Unable to fetch blog because: "+e.toString());
         }
     }
 }

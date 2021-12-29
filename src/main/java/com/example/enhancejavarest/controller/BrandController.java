@@ -4,14 +4,13 @@ import com.example.enhancejavarest.entity.Brand;
 import com.example.enhancejavarest.request.BrandLoginRequest;
 import com.example.enhancejavarest.request.CreateBlogCampaignRequest;
 import com.example.enhancejavarest.request.CreateVideoCampaignRequest;
+import com.example.enhancejavarest.response.GetBlogsResponse;
 import com.example.enhancejavarest.service.BrandService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Log4j2
@@ -61,6 +60,17 @@ public class BrandController {
         }catch(Exception e){
             log.error(e.toString());
             return new ResponseEntity<String>("Unable to add blog campaign", HttpStatus.CONFLICT);
+        }
+    }
+
+    @GetMapping("/blogs/{id}")
+    public ResponseEntity getBlogs(@PathVariable Integer id){
+        try{
+            GetBlogsResponse getBlogsResponse = brandService.getBlogs(id);
+            return new ResponseEntity<GetBlogsResponse>(getBlogsResponse, HttpStatus.OK);
+        }catch (Exception e){
+            log.error(e.toString());
+            return new ResponseEntity<String>("Unable to fetch blog campaign", HttpStatus.CONFLICT);
         }
     }
 }
