@@ -2,6 +2,7 @@ package com.example.enhancejavarest.controller;
 
 import com.example.enhancejavarest.entity.Brand;
 import com.example.enhancejavarest.request.BrandLoginRequest;
+import com.example.enhancejavarest.request.CreateBlogCampaignRequest;
 import com.example.enhancejavarest.request.CreateVideoCampaignRequest;
 import com.example.enhancejavarest.service.BrandService;
 import lombok.extern.log4j.Log4j2;
@@ -49,6 +50,17 @@ public class BrandController {
         }catch(Exception e){
             log.error(e.toString());
             return new ResponseEntity<String>("Unable to add video campaign", HttpStatus.CONFLICT);
+        }
+    }
+
+    @PostMapping("/create-blog-campaign")
+    public ResponseEntity createBlogCampaign(@RequestBody CreateBlogCampaignRequest createBlogCampaignRequest){
+        try{
+            String returnedString = brandService.createBlogCampaign(createBlogCampaignRequest);
+            return new ResponseEntity(returnedString, HttpStatus.CONFLICT);
+        }catch(Exception e){
+            log.error(e.toString());
+            return new ResponseEntity<String>("Unable to add blog campaign", HttpStatus.CONFLICT);
         }
     }
 }

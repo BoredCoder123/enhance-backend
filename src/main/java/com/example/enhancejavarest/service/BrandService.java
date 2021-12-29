@@ -1,14 +1,10 @@
 package com.example.enhancejavarest.service;
 
 import com.example.enhancejavarest.Constants.CampaignType;
-import com.example.enhancejavarest.entity.Brand;
-import com.example.enhancejavarest.entity.Campaign;
-import com.example.enhancejavarest.entity.User;
-import com.example.enhancejavarest.entity.Video;
-import com.example.enhancejavarest.repository.BrandRepository;
-import com.example.enhancejavarest.repository.CampaignRepository;
-import com.example.enhancejavarest.repository.VideoRepository;
+import com.example.enhancejavarest.entity.*;
+import com.example.enhancejavarest.repository.*;
 import com.example.enhancejavarest.request.BrandLoginRequest;
+import com.example.enhancejavarest.request.CreateBlogCampaignRequest;
 import com.example.enhancejavarest.request.CreateVideoCampaignRequest;
 import com.example.enhancejavarest.response.UserLoginResponse;
 import lombok.extern.log4j.Log4j2;
@@ -28,6 +24,12 @@ public class BrandService {
 
     @Autowired
     private CampaignRepository campaignRepository;
+
+    @Autowired
+    private BlogRepository blogRepository;
+
+    @Autowired
+    private DealRepository dealRepository;
 
     public String registerBrand(Brand brand) throws Exception{
         Brand existingBrand = brandRepository.findByEmail(brand.getEmail().toLowerCase());
@@ -60,9 +62,14 @@ public class BrandService {
     }
 
     public String createVideoCampaign(CreateVideoCampaignRequest createVideoCampaignRequest) throws Exception {
-        Brand checkBrand = brandRepository.getById(createVideoCampaignRequest.getBrandId());
-        if(checkBrand == null)
-            throw new Exception("Brand not present");
+        Brand checkBrand = null;
+        try {
+            checkBrand = brandRepository.getById(createVideoCampaignRequest.getBrandId());
+            System.out.println(checkBrand.getId()+checkBrand.getBrandName());
+        }catch (Exception e){
+            System.out.println(e.toString());
+            throw e;
+        }
         try{
             Video video = new Video();
             video.setVideoUrl(createVideoCampaignRequest.getVideoUrl());
@@ -78,13 +85,47 @@ public class BrandService {
             newCampaign.setCurrentViews(0);
             newCampaign.setCurrentViews(0);
             newCampaign.setCoinBalanceRemaining((int)(10*createVideoCampaignRequest.getMaxValue()));
-//            newCampaign.setBlog(null);
+            newCampaign.setBlog(null);
             newCampaign.setVideo(savedVideo);
-//            newCampaign.setDeal(null);
+            newCampaign.setDeal(null);
             campaignRepository.save(newCampaign);
             return "Video created and saved successfully";
         }catch(Exception e){
             throw new Exception("Unable to create video because: "+e.toString());
+        }
+    }
+
+    public String createBlogCampaign(CreateBlogCampaignRequest createBlogCampaignRequest) throws Exception{
+        Brand checkBrand = null;
+        try {
+            checkBrand = brandRepository.getById(createBlogCampaignRequest.getBrandId());
+            System.out.println(checkBrand.getId()+checkBrand.getBrandName());
+        }catch (Exception e){
+            System.out.println(e.toString());
+            throw e;
+        }
+        try{
+            Blog blog = new Blog();
+            blog.setBlogBody(createBlogCampaignRequest.getBlogBody());
+            Blog savedBlog = blogRepository.save(blog);
+            Campaign newCampaign = new Campaign();
+            newCampaign.setName(createBlogCampaignRequest.getName());
+            newCampaign.setType(CampaignType.BLOG);
+            newCampaign.setMaxValue(createBlogCampaignRequest.getMaxValue());
+            newCampaign.setBrand(checkBrand);
+            newCampaign.setEstimatedViews(createBlogCampaignRequest.getEstimatedViews());
+            newCampaign.setEstimatedClicks(0);
+            newCampaign.setCurrentClicks(0);
+            newCampaign.setCurrentViews(0);
+            newCampaign.setCurrentViews(0);
+            newCampaign.setCoinBalanceRemaining((int)(10*createBlogCampaignRequest.getMaxValue()));
+            newCampaign.setBlog(savedBlog);
+            newCampaign.setVideo(null);
+            newCampaign.setDeal(null);
+            campaignRepository.save(newCampaign);
+            return "Blog created and saved successfully";
+        }catch(Exception e){
+            throw new Exception("Unable to create blog because: "+e.toString());
         }
     }
 }
