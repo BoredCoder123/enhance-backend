@@ -3,6 +3,7 @@ package com.example.enhancejavarest.controller;
 import com.example.enhancejavarest.entity.Brand;
 import com.example.enhancejavarest.request.BrandLoginRequest;
 import com.example.enhancejavarest.request.CreateBlogCampaignRequest;
+import com.example.enhancejavarest.request.CreateDealCampaignRequest;
 import com.example.enhancejavarest.request.CreateVideoCampaignRequest;
 import com.example.enhancejavarest.response.GetBlogsResponse;
 import com.example.enhancejavarest.response.GetVideoResponse;
@@ -87,4 +88,17 @@ public class BrandController {
             return new ResponseEntity<String>("Unable to fetch videos campaign", HttpStatus.CONFLICT);
         }
     }
+
+    @PostMapping("/create-deal-campaign")
+    public ResponseEntity createDealCampaign(@RequestBody CreateDealCampaignRequest createDealCampaignRequest){
+        try{
+            String returnedString = brandService.createDealCampaign(createDealCampaignRequest);
+            return new ResponseEntity(returnedString, HttpStatus.OK);
+        }
+        catch (Exception e){
+            log.error(e.toString());
+            return new ResponseEntity<String>("Unable to save deal campaign", HttpStatus.CONFLICT);
+        }
+    }
+
 }

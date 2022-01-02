@@ -5,6 +5,7 @@ import com.example.enhancejavarest.entity.*;
 import com.example.enhancejavarest.repository.*;
 import com.example.enhancejavarest.request.BrandLoginRequest;
 import com.example.enhancejavarest.request.CreateBlogCampaignRequest;
+import com.example.enhancejavarest.request.CreateDealCampaignRequest;
 import com.example.enhancejavarest.request.CreateVideoCampaignRequest;
 import com.example.enhancejavarest.response.GetBlogsResponse;
 import com.example.enhancejavarest.response.GetVideoResponse;
@@ -88,7 +89,6 @@ public class BrandService {
             newCampaign.setEstimatedClicks(0);
             newCampaign.setCurrentClicks(0);
             newCampaign.setCurrentViews(0);
-            newCampaign.setCurrentViews(0);
             newCampaign.setCoinBalanceRemaining((int)(10*createVideoCampaignRequest.getMaxValue()));
             newCampaign.setBlog(null);
             newCampaign.setVideo(savedVideo);
@@ -122,7 +122,6 @@ public class BrandService {
             newCampaign.setEstimatedClicks(0);
             newCampaign.setCurrentClicks(0);
             newCampaign.setCurrentViews(0);
-            newCampaign.setCurrentViews(0);
             newCampaign.setCoinBalanceRemaining((int)(10*createBlogCampaignRequest.getMaxValue()));
             newCampaign.setBlog(savedBlog);
             newCampaign.setVideo(null);
@@ -138,13 +137,12 @@ public class BrandService {
         try{
             List<Map<String, Object>> blogs = blogRepository.getBlogsByBrandId(id);
             List<GetBlogsResponse> result = new ArrayList<>();
-            for(int i=0;i<blogs.size();i++){
-                Map<String, Object> blog= blogs.get(i);
+            for (Map<String, Object> blog : blogs) {
                 GetBlogsResponse newObject = new GetBlogsResponse();
-                newObject.setBlogId((Integer)blog.get("blog_id"));
-                newObject.setBrandId((Integer)blog.get("brand_id"));
+                newObject.setBlogId((Integer) blog.get("blog_id"));
+                newObject.setBrandId((Integer) blog.get("brand_id"));
                 newObject.setCampaignId((Integer) blog.get("campaign_id"));
-                newObject.setName((String)blog.get("name"));
+                newObject.setName((String) blog.get("name"));
                 newObject.setMaxValue((Double) blog.get("max_value"));
                 newObject.setEstimatedViews((Integer) blog.get("estimated_views"));
                 newObject.setCurrentViews((Integer) blog.get("current_views"));
@@ -162,13 +160,12 @@ public class BrandService {
         try{
             List<Map<String, Object>> blogs = videoRepository.getVideoByBrandId(id);
             List<GetVideoResponse> result = new ArrayList<>();
-            for(int i=0;i<blogs.size();i++){
-                Map<String, Object> blog= blogs.get(i);
+            for (Map<String, Object> blog : blogs) {
                 GetVideoResponse newObject = new GetVideoResponse();
-                newObject.setVideoId((Integer)blog.get("video_id"));
-                newObject.setBrandId((Integer)blog.get("brand_id"));
+                newObject.setVideoId((Integer) blog.get("video_id"));
+                newObject.setBrandId((Integer) blog.get("brand_id"));
                 newObject.setCampaignId((Integer) blog.get("campaign_id"));
-                newObject.setName((String)blog.get("name"));
+                newObject.setName((String) blog.get("name"));
                 newObject.setMaxValue((Double) blog.get("max_value"));
                 newObject.setEstimatedViews((Integer) blog.get("estimated_views"));
                 newObject.setCurrentViews((Integer) blog.get("current_views"));
@@ -179,6 +176,14 @@ public class BrandService {
             return result;
         } catch (Exception e){
             throw new Exception("Unable to fetch videos because: "+e.toString());
+        }
+    }
+
+    public String createDealCampaign(CreateDealCampaignRequest createDealCampaignRequest) throws Exception{
+        try{
+            
+        }catch (Exception e){
+            throw new Exception("Unable to save deal because: "+e.toString());
         }
     }
 }
