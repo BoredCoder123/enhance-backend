@@ -19,8 +19,7 @@ public class Blog {
     @Column(name = "id")
     private Integer blogId;
 
-    @Lob
-    @Column(name = "blog_body")
+    @Column(name = "blog_body", columnDefinition = "TEXT")
     private String blogBody;
 
 //    @OneToOne(mappedBy = "campaign")

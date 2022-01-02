@@ -16,9 +16,7 @@ public class GetBlogsResponse {
     private String name;
     private Double maxValue;
     private Integer estimatedViews;
-    private Integer estimatedClicks;
     private Integer currentViews;
-    private Integer currentClicks;
     private Integer coinBalanceRemaining;
     private String blogBody;
 }

@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Log4j2
 public class BrandController {
@@ -66,8 +68,8 @@ public class BrandController {
     @GetMapping("/blogs/{id}")
     public ResponseEntity getBlogs(@PathVariable Integer id){
         try{
-            GetBlogsResponse getBlogsResponse = brandService.getBlogs(id);
-            return new ResponseEntity<GetBlogsResponse>(getBlogsResponse, HttpStatus.OK);
+            List<GetBlogsResponse> getBlogsResponse = brandService.getBlogs(id);
+            return new ResponseEntity<List>(getBlogsResponse, HttpStatus.OK);
         }catch (Exception e){
             log.error(e.toString());
             return new ResponseEntity<String>("Unable to fetch blog campaign", HttpStatus.CONFLICT);

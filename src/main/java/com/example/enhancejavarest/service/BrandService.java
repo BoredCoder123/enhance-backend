@@ -12,7 +12,10 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 @Service
 @Log4j2
@@ -130,9 +133,25 @@ public class BrandService {
         }
     }
 
-    public GetBlogsResponse getBlogs(Integer id) throws Exception{
+    public List<GetBlogsResponse> getBlogs(Integer id) throws Exception{
         try{
-
+            List<Map<String, Object>> blogs = blogRepository.getBlogsByBrandId(id);
+            List<GetBlogsResponse> result = new ArrayList<>();
+            for(int i=0;i<blogs.size();i++){
+                Map<String, Object> blog= blogs.get(i);
+                GetBlogsResponse newObject = new GetBlogsResponse();
+                newObject.setBlogId((Integer)blog.get("blog_id"));
+                newObject.setBrandId((Integer)blog.get("brand_id"));
+                newObject.setCampaignId((Integer) blog.get("campaign_id"));
+                newObject.setName((String)blog.get("name"));
+                newObject.setMaxValue((Double) blog.get("max_value"));
+                newObject.setEstimatedViews((Integer) blog.get("estimated_views"));
+                newObject.setCurrentViews((Integer) blog.get("current_views"));
+                newObject.setCoinBalanceRemaining((Integer) blog.get("coin_balance_remaining"));
+                newObject.setBlogBody((String) blog.get("blog_body"));
+                result.add(newObject);
+            }
+            return result;
         } catch (Exception e){
             throw new Exception("Unable to fetch blog because: "+e.toString());
         }
