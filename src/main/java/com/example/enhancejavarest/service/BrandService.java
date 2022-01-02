@@ -7,6 +7,7 @@ import com.example.enhancejavarest.request.BrandLoginRequest;
 import com.example.enhancejavarest.request.CreateBlogCampaignRequest;
 import com.example.enhancejavarest.request.CreateVideoCampaignRequest;
 import com.example.enhancejavarest.response.GetBlogsResponse;
+import com.example.enhancejavarest.response.GetVideoResponse;
 import com.example.enhancejavarest.response.UserLoginResponse;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,6 +155,30 @@ public class BrandService {
             return result;
         } catch (Exception e){
             throw new Exception("Unable to fetch blog because: "+e.toString());
+        }
+    }
+
+    public List<GetVideoResponse> getVideosByBrandId(Integer id) throws Exception {
+        try{
+            List<Map<String, Object>> blogs = videoRepository.getVideoByBrandId(id);
+            List<GetVideoResponse> result = new ArrayList<>();
+            for(int i=0;i<blogs.size();i++){
+                Map<String, Object> blog= blogs.get(i);
+                GetVideoResponse newObject = new GetVideoResponse();
+                newObject.setVideoId((Integer)blog.get("video_id"));
+                newObject.setBrandId((Integer)blog.get("brand_id"));
+                newObject.setCampaignId((Integer) blog.get("campaign_id"));
+                newObject.setName((String)blog.get("name"));
+                newObject.setMaxValue((Double) blog.get("max_value"));
+                newObject.setEstimatedViews((Integer) blog.get("estimated_views"));
+                newObject.setCurrentViews((Integer) blog.get("current_views"));
+                newObject.setCoinBalanceRemaining((Integer) blog.get("coin_balance_remaining"));
+                newObject.setVideoUrl((String) blog.get("video_url"));
+                result.add(newObject);
+            }
+            return result;
+        } catch (Exception e){
+            throw new Exception("Unable to fetch videos because: "+e.toString());
         }
     }
 }

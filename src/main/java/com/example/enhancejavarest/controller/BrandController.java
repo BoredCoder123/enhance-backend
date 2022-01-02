@@ -5,6 +5,7 @@ import com.example.enhancejavarest.request.BrandLoginRequest;
 import com.example.enhancejavarest.request.CreateBlogCampaignRequest;
 import com.example.enhancejavarest.request.CreateVideoCampaignRequest;
 import com.example.enhancejavarest.response.GetBlogsResponse;
+import com.example.enhancejavarest.response.GetVideoResponse;
 import com.example.enhancejavarest.service.BrandService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,17 @@ public class BrandController {
         }catch (Exception e){
             log.error(e.toString());
             return new ResponseEntity<String>("Unable to fetch blog campaign", HttpStatus.CONFLICT);
+        }
+    }
+
+    @GetMapping("/videos/{id}")
+    public ResponseEntity getVideos(@PathVariable Integer id){
+        try{
+            List<GetVideoResponse> getVideoResponse = brandService.getVideosByBrandId(id);
+            return new ResponseEntity(getVideoResponse, HttpStatus.OK);
+        }catch (Exception e){
+            log.error(e.toString());
+            return new ResponseEntity<String>("Unable to fetch videos campaign", HttpStatus.CONFLICT);
         }
     }
 }
